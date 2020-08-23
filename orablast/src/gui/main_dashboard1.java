@@ -265,7 +265,7 @@ public class main_dashboard1 extends Thread implements ActionListener {
 					  String [] myArray1 = Arrays.copyOfRange(array, 0, array.length/2);
 				      String [] myArray2 = Arrays.copyOfRange(array, array.length/2, array.length);
 				      
-				    //Build hash table in memory so that the blast threads can look up the index number of the GUI table row by db name to mark each run 
+				    //Build hash table structure in memory so that the blast threads can look up the index number of the GUI table row by db name to mark each run 
 				    //as SUCCESS or ERROR.
 				      
 				      hm = new hash_map();
