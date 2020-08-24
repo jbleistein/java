@@ -18,6 +18,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import db_access.db_connect;
+import dnl.utils.text.table.TextTable;
 import gui.main_dashboard1;
 import mem_structs.hash_map;
 
@@ -72,8 +73,6 @@ public class blast_thread extends Thread {
 			        System.out.println("connect string: "+full_connect_string);
 			        
 			        
-
-					
 			          c2 = DriverManager.getConnection(full_connect_string);
 			         
 			         
@@ -81,7 +80,9 @@ public class blast_thread extends Thread {
 			         stmts = sql2.split(";");
 			         
 			        
-			         PreparedStatement stmt2 = c2.prepareStatement(sql2);
+			         PreparedStatement stmt2 = c2.prepareStatement(sql2,
+			        		    ResultSet.TYPE_SCROLL_INSENSITIVE,
+			 				    ResultSet.CONCUR_READ_ONLY);
 			         
 						
 			         try {
@@ -140,7 +141,50 @@ public class blast_thread extends Thread {
 			          
 			          System.out.println("\n\n!!!column count: " +rs_col_count);
 			          
+			          if(!rs3.next()) {
+			 				
+			 				return;
+			 				
+			 			}
+			 	        
+			 			rs3.last();
+			 			
+				 	    int num_of_rows = rs3.getRow();
+				 	    
+				 	   rs3.beforeFirst(); //resets resultset after looping through it each time.
+				 		
+				 		
+			 	        Object[][] resultSet = new Object[num_of_rows][rs_col_count];
+			 	        String col_names[] = new String[rsmd.getColumnCount()];
+			 	        
+				 	      i=0;
+				 	      			 	     
+				 	      while (rs3.next()) {
+
+				 	          for (int j = 0; j < rs_col_count; j++) {
+				 	              resultSet[i][j] = rs3.getString(j+1);
+				 	              
+				 	          }
+				 	          i++;
+				 	      }
+				 	      
+				 	      i=0;
+				 	      
+				 	      for (int j = 1; j <= rs_col_count; j++) {
+				 	    	      col_names[i] = rsmd.getColumnName(j);
+				 	    	      i++;
+				 	      }
+				 	      
+				 	     TextTable tt = new TextTable(col_names, resultSet);
+
+				 			
+							// this adds the numbering on the left 
+							tt.setAddRowNumbering(true); 
+							// sort by the first column 
+							tt.setSort(0); 
+							tt.printTable(); 
 			          
+			          /*
 			          while (rs3.next()) {
 			        	 
 			          
@@ -151,7 +195,7 @@ public class blast_thread extends Thread {
 			          
 					}
 			          	
-			          }
+			          }*/
 			          
 					}
 					

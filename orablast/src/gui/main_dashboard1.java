@@ -301,6 +301,22 @@ public class main_dashboard1 extends Thread implements ActionListener {
 				      bt1 = new blast_thread(myArray1);
 				      bt2 = new blast_thread(myArray2);
 				      
+				      for (int i=0;i < myArray1.length;i++) {
+				    	  
+				    	  System.out.println("Myarray1 elements: " +myArray1[i]);
+				    	  
+				      }
+				      
+				      System.out.println("\n\n");
+				      
+
+				      for (int i=0;i < myArray2.length;i++) {
+				    	  
+				    	  System.out.println("Myarray2 elements: " +myArray2[i]);
+				    	  
+				      }
+				      
+				      
 
 				    bt1.start();
 				    bt2.start();

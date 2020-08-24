@@ -7,9 +7,9 @@ import dnl.utils.text.table.TextTable;
 
 	public class test2 {
 		
-		static Object[][] sql2;
-		static ArrayList<Object> newObj;
+
 		static int a;
+		static int i;
 	 	
 	 	static Connection c1;
 	 	
@@ -36,42 +36,55 @@ import dnl.utils.text.table.TextTable;
 	 				    ResultSet.CONCUR_READ_ONLY
 	 					);
 	 			
-	 			String sql = "select * from names";
+	 			//String sql = "select * from names";
 
 	 			
-	 			stmt1.execute(sql);
+	 			stmt1.execute();
 
 	 	        
 	 			ResultSet rs3=stmt1.getResultSet();
 
 	 	      ResultSetMetaData metadata = rs3.getMetaData();
 	 	      int numberOfColumns = metadata.getColumnCount();
-	 	      
-	 	     if(!rs3.next()) {
-	 				
-	 				return;
-	 				
-	 			}
-	 	        
-	 			rs3.last();
-		 	    int num_of_rows = rs3.getRow();
+		 		
+
+		 	     if(!rs3.next()) {
+		 				
+		 				return;
+		 				
+		 			}
+		 	        
+		 			rs3.last();
+			 	    int num_of_rows = rs3.getRow();
+			 	    
 	 			
 	 		rs3.beforeFirst(); //resets resultset after looping through it each time.
-	 	      
-	 	     
-	 	        String[] col_names = new String[] {"fname"};
+	 		
+	 		
 	 	        Object[][] resultSet = new Object[num_of_rows][numberOfColumns];
+	 	        String col_names[] = new String[metadata.getColumnCount()];
 	 	        
 	 	       
-	 	      int i=0;
+	 	      i=0;
+	 	      
+	 	     
 	 	      while (rs3.next()) {
 
 	 	          for (int j = 0; j < numberOfColumns; j++) {
 	 	              resultSet[i][j] = rs3.getString(j+1);
+	 	              
 	 	          }
 	 	          i++;
 	 	      }
-
+	 	      
+	 	      i=0;
+	 	      
+	 	      for (int j = 1; j <= numberOfColumns; j++) {
+	 	    	      col_names[i] = metadata.getColumnName(j);
+	 	    	      i++;
+	 	      }
+              
+	 	      
 	 			TextTable tt = new TextTable(col_names, resultSet);
 
 	 			
