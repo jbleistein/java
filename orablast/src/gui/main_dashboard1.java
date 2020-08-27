@@ -242,6 +242,8 @@ public class main_dashboard1 extends Thread implements ActionListener {
 			if (e.getSource() == btnNewButton) {
 				//blast
 				
+				
+				
 				int [] SelectedRow = table_1.getSelectedRows();
 				
 				for (int i = 0;i < SelectedRow.length;i++) {
@@ -292,6 +294,28 @@ public class main_dashboard1 extends Thread implements ActionListener {
 							});		 	        
 
 					  }
+					  
+
+					  else if (SelectedRow.length == 0) {
+							
+							EventQueue.invokeLater(new Runnable() {
+					        	public void run() {
+									try {
+										
+										JOptionPane optionPane1 = new JOptionPane("No selected databases for blast. Please select one or more databases", JOptionPane.ERROR_MESSAGE);
+							  			JDialog dialog = optionPane1.createDialog("Error");
+							  			dialog.setAlwaysOnTop(true);
+							  			dialog.setVisible(true);
+							  			
+										
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+								}
+							});		 	        
+							
+							
+						}
 					  
 					  else {
 				      
