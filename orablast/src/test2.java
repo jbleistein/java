@@ -30,14 +30,13 @@ import dnl.utils.text.table.TextTable;
 	 			e.printStackTrace();
 	 		}
 	 		
+	 		String sql = "select * from names";
+	 		
 	 		try {
-	 			PreparedStatement stmt1 = c1.prepareStatement("select * from names",
+	 			PreparedStatement stmt1 = c1.prepareStatement(sql,
 	 					ResultSet.TYPE_SCROLL_INSENSITIVE,
 	 				    ResultSet.CONCUR_READ_ONLY
 	 					);
-	 			
-	 			//String sql = "select * from names";
-
 	 			
 	 			stmt1.execute();
 

@@ -18,6 +18,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import db_access.db_connect;
+import dnl.utils.text.table.TextTable;
 import gui.main_dashboard1;
 import mem_structs.hash_map;
 
@@ -36,6 +37,8 @@ public class blast_thread extends Thread {
 	 int r;
 	 ResultSet rs3;
 	 int db_ind;
+	 int a;
+	 int b;
 	
 	static Connection c1;
 	static Connection c2;
@@ -71,24 +74,23 @@ public class blast_thread extends Thread {
 			        
 			        System.out.println("connect string: "+full_connect_string);
 			        
-			        
-
 					
 			          c2 = DriverManager.getConnection(full_connect_string);
 			         
 			         
 			         String sql2 =  main_dashboard1.textArea.getText(); // Get user inputed SQL statement from text area in Blast dashboard GUI
 			         stmts = sql2.split(";");
-			         
-			        
-			         PreparedStatement stmt2 = c2.prepareStatement(sql2);
-			         
-						
-			         try {
+			
+			       
+				 	PreparedStatement stmt2 = c2.prepareStatement(sql2,
+				 	ResultSet.TYPE_SCROLL_INSENSITIVE,
+				 	ResultSet.CONCUR_READ_ONLY
+				 	);
+				 	
+				 	try {
 			        	 
 			        	for (int n=0;n < stmts.length;n++) {
 			        		
-			        
 			         rs2 = stmt2.execute(stmts[n]); //Where we actually run the code in the database.
 			         
 			         db_ind = main_dashboard1.hm.get_pdb_ind_hm(myArray[i]);
@@ -115,9 +117,9 @@ public class blast_thread extends Thread {
 						});			
 			          
 			          
-			        }
+			        	}
 			        	
-			        	} catch (SQLException e) {
+				 	} catch (SQLException e) {
 			        	 
 			        	 int db_ind = main_dashboard1.hm.get_pdb_ind_hm(myArray[i]);
 							
@@ -130,36 +132,72 @@ public class blast_thread extends Thread {
 			        	 any_thread_errors=1;
 			        	 
 			         }
-			          
+				 	
+				 	  ResultSet rs3=stmt2.getResultSet();
+				 	  ResultSetMetaData metadata = rs3.getMetaData();
+				 	  
+				 	  
+				 	  int numberOfColumns = metadata.getColumnCount();
+					 	
+					 	     if(!rs3.next()) {
+					 				
+					 				return;
+					 			}
+					 	        
+					 			rs3.last();
+						 	    int num_of_rows = rs3.getRow();
+						 	    
+				 			
+				 		rs3.beforeFirst(); //resets resultset after looping through it each time.
+				 		
+				 		
+				 	        Object[][] resultSet = new Object[num_of_rows][numberOfColumns];
+				 	        String col_names[] = new String[metadata.getColumnCount()];
+
+				 	     a=0;
+ 
+				 	     while (rs3.next()) {
+
+				 	          for (int j = 0; j < numberOfColumns; j++) {
+				 	              resultSet[a][j] = rs3.getString(j+1);
+				 	              
+				 	          }
+				 	          a++;
+				 	      
+				 	     }
+				 	      b=0;
+				 	      
+				 	      for (int j = 1; j <= numberOfColumns; j++) {
+				 	    	      col_names[b] = metadata.getColumnName(j);
+				 	    	      b++;
+				 	      }
+			              
+				 	      
+				 			TextTable tt = new TextTable(col_names, resultSet);
+
+				 			
+							// this adds the numbering on the left 
+							tt.setAddRowNumbering(true); 
+							// sort by the first column 
+							tt.setSort(0); 
+							tt.printTable();
+
+
+			         
 		             // if (rs2 == true) { // true if select and false if DDL or any other DML
 		            
-			          rs3=stmt2.getResultSet();
+			        
 			          
-			          rsmd = rs3.getMetaData();
-			          int rs_col_count = rsmd.getColumnCount();
-			          
-			          System.out.println("\n\n!!!column count: " +rs_col_count);
-			          
-			          
-			          while (rs3.next()) {
-			        	 
-			          
-			          for (r=1;r <= rs_col_count;r++) { //The column index starts at 1 not 0.
-			          		
-			          		System.out.println("SQL query output: " +rs3.getString(r));	
-			          		
-			          
+					  }
 					}
-			          	
-			          }
-			          
-					}
+		        
 					
 					/*else {
 	                	
                         System.out.println("Output: " +stmt2.getUpdateCount());   
  		                
-					*/}
+					*/
+		        //}
 					
 		        
 		        	        
@@ -175,6 +213,24 @@ public class blast_thread extends Thread {
 	        	    e.printStackTrace();
 	        	    
 					 }
+		        
+		 	 finally {
+		 	    if (rs3 != null) {
+		 	        try {
+		 	            rs3.close();
+		 	        } catch (SQLException e) { }
+		 	    }
+		 	    if (stmt2 != null) {
+		 	        try {
+		 	            stmt2.close();
+		 	        } catch (SQLException e) { }
+		 	    }
+		 	    if (c2 != null) {
+		 	        try {
+		 	            c2.close();
+		 	        } catch (SQLException e) { }
+		 	    }
+		 	}
 					 
 					 
 					} 

@@ -29,7 +29,9 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
+import db_access.create_db_connections;
 import db_access.db_connect;
+import mem_structs.dbname_hash_map;
 import mem_structs.hash_map;
 import thread.blast_thread;
 import thread.build_jtable;
@@ -320,10 +322,8 @@ public class main_dashboard1 extends Thread implements ActionListener {
 					  else {
 				      
 					  
-				   //Start DB worker threads.   
-					  
-				      bt1 = new blast_thread(myArray1);
-				      bt2 = new blast_thread(myArray2);
+						  
+						  //debugging stuff
 				      
 				      for (int i=0;i < myArray1.length;i++) {
 				    	  
@@ -338,13 +338,19 @@ public class main_dashboard1 extends Thread implements ActionListener {
 				    	  
 				    	  System.out.println("Myarray2 elements: " +myArray2[i]);
 				    	  
-				      }
 				      
+				      }
+
+				      
+					   //Start DB worker threads.   
+						  
+					      bt1 = new blast_thread(myArray1);
+					      bt2 = new blast_thread(myArray2);
 				      
 
-				    bt1.start();
-				    bt2.start();
-				    
+						    bt1.start();
+						    bt2.start();
+						    
 				    
 				  //Thread to monitor other threads. Nothing fancy from a concurrency perspective just know when the DB worker threads are done running.
 				    
@@ -360,8 +366,3 @@ public class main_dashboard1 extends Thread implements ActionListener {
 
 
 		}
-  
-
-
-
-

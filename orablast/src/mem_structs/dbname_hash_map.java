@@ -6,7 +6,7 @@ import javax.swing.JTable;
 
 import gui.main_dashboard1;
 
-public class hash_map {
+public class dbname_hash_map {
 	
 	 static JTable table_1 = main_dashboard1.table_1;
 	 HashMap<String, Integer> pdb_ind;
@@ -36,5 +36,11 @@ public class hash_map {
 		return b;
 		
 	}
+
+	public static void put_value() {
+	
+		
+	}
+
 
 }
