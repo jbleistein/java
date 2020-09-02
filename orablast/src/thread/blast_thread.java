@@ -28,18 +28,19 @@ public class blast_thread extends Thread {
 	Connection base_db_connection = db_connect.c1; //App config database established in the earlier db connect class.
 	 static JTable table_1 = main_dashboard1.table_1;
 	 public String[] myArray;
-	 boolean rs2;
 	 DefaultTableModel model = main_dashboard1.model;
 	 int i;
 	 Statement stmt2;
 	 String[] stmts;
 	 ResultSetMetaData rsmd;
+	 boolean rs2;
+	 
 	 int r;
-	 ResultSet rs3;
 	 int db_ind;
 	 int a;
 	 int b;
 	
+	ResultSet rs3;
 	static Connection c1;
 	static Connection c2;
 
@@ -79,19 +80,22 @@ public class blast_thread extends Thread {
 			         
 			         
 			         String sql2 =  main_dashboard1.textArea.getText(); // Get user inputed SQL statement from text area in Blast dashboard GUI
-			         stmts = sql2.split(";");
+			         
+			         String[] stmts = sql2.split(";"); //Array to break up each sql statement deliminted by ;.
 			
+			         
+			         for (int n=0;n < stmts.length;n++) {
 			       
-				 	PreparedStatement stmt2 = c2.prepareStatement(sql2,
+				 	PreparedStatement stmt2 = c2.prepareStatement(stmts[n],
 				 	ResultSet.TYPE_SCROLL_INSENSITIVE,
 				 	ResultSet.CONCUR_READ_ONLY
 				 	);
 				 	
 				 	try {
 			        	 
-			        	for (int n=0;n < stmts.length;n++) {
-			        		
+			        	
 			         rs2 = stmt2.execute(stmts[n]); //Where we actually run the code in the database.
+			         rs3 = stmt2.getResultSet();
 			         
 			         db_ind = main_dashboard1.hm.get_pdb_ind_hm(myArray[i]);
 			         
@@ -116,8 +120,6 @@ public class blast_thread extends Thread {
 							}
 						});			
 			          
-			          
-			        	}
 			        	
 				 	} catch (SQLException e) {
 			        	 
@@ -133,7 +135,15 @@ public class blast_thread extends Thread {
 			        	 
 			         }
 				 	
-				 	  ResultSet rs3=stmt2.getResultSet();
+				 	
+		             
+				 	if (rs2 == false) { //True if select/query and false if DDL or any other DML
+		            
+				 			System.out.println("DDL or non-SELECT output: " +stmt2.getUpdateCount());   
+			          
+					 } else {
+				 	
+				 	
 				 	  ResultSetMetaData metadata = rs3.getMetaData();
 				 	  
 				 	  
@@ -181,27 +191,15 @@ public class blast_thread extends Thread {
 							// sort by the first column 
 							tt.setSort(0); 
 							tt.printTable();
-
-
+							
+				 	       }
 			         
-		             // if (rs2 == true) { // true if select and false if DDL or any other DML
-		            
-			        
-			          
-					  }
+			            }
+					
 					}
-		        
-					
-					/*else {
-	                	
-                        System.out.println("Output: " +stmt2.getUpdateCount());   
- 		                
-					*/
-		        //}
-					
-		        
-		        	        
-		        catch (Exception e) { 
+
+				
+					} catch (Exception e) { 
 					 
 					 
 		        	int db_ind = main_dashboard1.hm.get_pdb_ind_hm(myArray[i]);
@@ -214,28 +212,9 @@ public class blast_thread extends Thread {
 	        	    
 					 }
 		        
-		 	 finally {
-		 	    if (rs3 != null) {
-		 	        try {
-		 	            rs3.close();
-		 	        } catch (SQLException e) { }
-		 	    }
-		 	    if (stmt2 != null) {
-		 	        try {
-		 	            stmt2.close();
-		 	        } catch (SQLException e) { }
-		 	    }
-		 	    if (c2 != null) {
-		 	        try {
-		 	            c2.close();
-		 	        } catch (SQLException e) { }
-		 	    }
-		 	}
-					 
-					 
-					} 
+			    } 
 
-		        
+			
 		 	}
 	
 
@@ -244,6 +223,7 @@ public class blast_thread extends Thread {
 		return any_thread_errors;
 		
 	    }
+		 	
 	}
 	
 	
