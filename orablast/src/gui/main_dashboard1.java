@@ -130,7 +130,7 @@ public class main_dashboard1 extends Thread implements ActionListener {
 
 		table_1 = new JTable(model);
 		table_1.setBounds(6, 22, 133, 483);
-		table_1.setGridColor(Color.gray);
+		//table_1.setGridColor(Color.gray);
 		panel.add(table_1);
 		
 

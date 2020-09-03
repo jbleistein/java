@@ -1,6 +1,8 @@
 package thread;
 
 import java.awt.EventQueue;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -190,7 +192,14 @@ public class blast_thread extends Thread {
 							tt.setAddRowNumbering(true); 
 							// sort by the first column 
 							tt.setSort(0); 
+							
+							//Write table formatted stream output to a file.
+							
+							PrintStream pw1 = new PrintStream("orablast_"+myArray[i]+".log");
+							System.setOut(pw1);
+							
 							tt.printTable();
+							pw1.close();
 							
 				 	       }
 			         
