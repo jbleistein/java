@@ -1,6 +1,7 @@
 package orablast;
 
 import java.awt.EventQueue;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -55,7 +56,7 @@ public class orablast {
 		// Process properties file for application config, if environmental
 		// variables were not set.
 
-		try (InputStream cfg_file = new FileInputStream("orablast.cfg")) {
+		try (InputStream cfg_file = new FileInputStream(".."+File.separator+"cfg"+File.separator+"orablast.cfg")) {
 
 			Properties prop = new Properties();
 			prop.load(cfg_file);

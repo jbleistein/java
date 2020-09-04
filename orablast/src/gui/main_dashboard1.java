@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.BoxLayout;
 import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -73,8 +74,9 @@ public class main_dashboard1 extends Thread implements ActionListener {
 	String [] array;
 	monitor_db_thread1 mt1;
 	public static hash_map hm;
+	JPanel panel;
     
-	
+		
 	static Connection c2=null;
 	private JTextField textField_1;
 
@@ -93,7 +95,7 @@ public class main_dashboard1 extends Thread implements ActionListener {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frmOracleRrtDashboard.getContentPane().add(tabbedPane);
 		
-		JPanel panel = new JPanel();
+	    panel = new JPanel();
 		tabbedPane.addTab("Blast", null, panel, null);
 		panel.setLayout(null);
 		
@@ -205,6 +207,7 @@ public class main_dashboard1 extends Thread implements ActionListener {
 
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void actionPerformed(ActionEvent e) {
 		
 		if(e.getSource() == btnNewButton_2) {
@@ -351,6 +354,13 @@ public class main_dashboard1 extends Thread implements ActionListener {
 
 						    bt1.start();
 						    bt2.start();
+						    
+						    JProgressBar aJProgressBar = new JProgressBar(JProgressBar.HORIZONTAL);
+						    aJProgressBar.setStringPainted(true);
+						    aJProgressBar.setIndeterminate(true);
+						    panel.add(aJProgressBar);
+						    
+						    //aJProgressBar.disable();
 						    
 				    
 				  //Thread to monitor other threads. Nothing fancy from a concurrency perspective just know when the DB worker threads are done running.

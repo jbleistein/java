@@ -1,6 +1,7 @@
 package thread;
 
 import java.awt.EventQueue;
+import java.io.File;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
@@ -11,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -195,7 +198,10 @@ public class blast_thread extends Thread {
 							
 							//Write table formatted stream output to a file.
 							
-							PrintStream pw1 = new PrintStream("orablast_"+myArray[i]+".log");
+							String file_ts = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
+							
+							PrintStream pw1 = new PrintStream(".."+File.separator+"output"+File.separator+"orablast_"+myArray[i]+"_"+file_ts
+									+".out");
 							System.setOut(pw1);
 							
 							tt.printTable();
