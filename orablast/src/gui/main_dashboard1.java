@@ -75,6 +75,7 @@ public class main_dashboard1 extends Thread implements ActionListener {
 	monitor_db_thread1 mt1;
 	public static hash_map hm;
 	JPanel panel;
+	public static JFrame pbjf1;
     
 		
 	static Connection c2=null;
@@ -355,10 +356,20 @@ public class main_dashboard1 extends Thread implements ActionListener {
 						    bt1.start();
 						    bt2.start();
 						    
-						    JProgressBar aJProgressBar = new JProgressBar(JProgressBar.HORIZONTAL);
-						    aJProgressBar.setStringPainted(true);
-						    aJProgressBar.setIndeterminate(true);
-						    panel.add(aJProgressBar);
+						    pbjf1 = new JFrame();
+						    pbjf1.setSize(200,100);
+						    pbjf1.setLocationRelativeTo(null);
+						  
+						    
+						    JPanel jp1 = new JPanel();
+						    
+						    JProgressBar pb1 = new JProgressBar();
+						    pb1.setIndeterminate(true);
+						    
+						    jp1.add(pb1);
+						    pbjf1.add(jp1);
+						    pbjf1.pack();
+						    pbjf1.setVisible(true);
 						    
 						    //aJProgressBar.disable();
 						    
