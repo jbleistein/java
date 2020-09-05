@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.BoxLayout;
 import javax.swing.JTabbedPane;
@@ -76,6 +77,7 @@ public class main_dashboard1 extends Thread implements ActionListener {
 	public static hash_map hm;
 	JPanel panel;
 	public static JFrame pbjf1;
+	public static JFrame pbjf2;
     
 		
 	static Connection c2=null;
@@ -89,8 +91,9 @@ public class main_dashboard1 extends Thread implements ActionListener {
 		frmOracleRrtDashboard.setBounds(100, 100, 891, 591);
 		frmOracleRrtDashboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmOracleRrtDashboard.getContentPane().setLayout(new BoxLayout(frmOracleRrtDashboard.getContentPane(), BoxLayout.X_AXIS));
-		frmOracleRrtDashboard.setVisible(true);
 		frmOracleRrtDashboard.setLocationRelativeTo(null);
+		frmOracleRrtDashboard.setVisible(true);
+		frmOracleRrtDashboard.setResizable(false);
 	
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -121,11 +124,7 @@ public class main_dashboard1 extends Thread implements ActionListener {
 		model.addColumn("Host");
         model.addColumn("DB");   
         model.addColumn("Status");
-        
-// where the table build code was before
-        
-       build_jtable bjt1 = new build_jtable();
-       bjt1.start();
+	 
 		
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab("DOD", null, panel_1, null);
@@ -199,16 +198,38 @@ public class main_dashboard1 extends Thread implements ActionListener {
 		button.setBounds(6, 494, 117, 29);
 		panel.add(button);
 		
-		
 		btnNewButton_2.addActionListener(this);
 		btnNewButton.addActionListener(this);
 		button.addActionListener(this);
 		btnNewButton_1.addActionListener(this);
 		
-
+		//Build list of databases in table.
+        
+	       build_jtable bjt1 = new build_jtable();
+	       bjt1.start();
+	       
+	     //Progress bar while building list of databases in table
+		    
+		    pbjf2 = new JFrame();
+		    pbjf2.setSize(200,100);
+		    pbjf2.setLocationRelativeTo(null);
+		  
+		    
+		    JPanel jp2 = new JPanel();
+		    
+		    JProgressBar pb2 = new JProgressBar();
+		    pb2.setIndeterminate(true);
+		    
+		    jp2.add(pb2);
+		    pbjf2.add(jp2);
+		    pbjf2.setVisible(true);
+		    pbjf2.setAlwaysOnTop(true);
+		    JLabel jl1 = new JLabel("Building list of databases");
+		    jp2.add(jl1);
+		    pbjf2.pack();
+		
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void actionPerformed(ActionEvent e) {
 		
 		if(e.getSource() == btnNewButton_2) {
@@ -356,6 +377,8 @@ public class main_dashboard1 extends Thread implements ActionListener {
 						    bt1.start();
 						    bt2.start();
 						    
+						    //Progress bar while running blast
+						    
 						    pbjf1 = new JFrame();
 						    pbjf1.setSize(200,100);
 						    pbjf1.setLocationRelativeTo(null);
@@ -370,9 +393,10 @@ public class main_dashboard1 extends Thread implements ActionListener {
 						    pbjf1.add(jp1);
 						    pbjf1.pack();
 						    pbjf1.setVisible(true);
-						    
-						    //aJProgressBar.disable();
-						    
+						    JLabel jl2 = new JLabel("Blasting SQL out to databases");
+						    jp1.add(jl2);
+						    pbjf1.pack();
+						 
 				    
 				  //Thread to monitor other threads. Nothing fancy from a concurrency perspective just know when the DB worker threads are done running.
 				    

@@ -16,6 +16,7 @@ public class build_jtable extends Thread {
 	
 
 	public void run() {
+		
 
 try {
 
@@ -47,6 +48,18 @@ try {
     System.out.println(e.getMessage());
     
 			}
+
+//Turn off progress bar because table is built.
+
+
+try {
+	Thread.sleep(5000);
+} catch (InterruptedException e) {
+
+	e.printStackTrace();
+}
+
+	main_dashboard1.pbjf2.setVisible(false);
 
 	}
 	
