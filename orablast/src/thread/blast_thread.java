@@ -48,6 +48,7 @@ public class blast_thread extends Thread {
 	ResultSet rs3;
 	static Connection c1;
 	static Connection c2;
+	public static PrintStream pw1;
 
 
 	public blast_thread(String[] myArray) {
@@ -198,9 +199,9 @@ public class blast_thread extends Thread {
 							
 							//Write table formatted stream output to a file.
 							
-							String file_ts = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
+							String file_ts = new SimpleDateFormat("yyyyMMdd").format(new Date());
 							
-							PrintStream pw1 = new PrintStream(".."+File.separator+"output"+File.separator+"orablast_"+myArray[i]+"_"+file_ts
+							pw1 = new PrintStream(".."+File.separator+"output"+File.separator+"orablast_"+myArray[i]+"_"+file_ts
 									+".out");
 							System.setOut(pw1);
 							

@@ -1,23 +1,31 @@
 package gui;
 
 import java.awt.EventQueue;
+import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.BoxLayout;
 import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -43,6 +51,7 @@ import thread.test1;
 import javax.swing.JScrollPane;
 import java.awt.Choice;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Dimension;
 
 import javax.swing.JTable;
@@ -82,6 +91,8 @@ public class main_dashboard1 extends Thread implements ActionListener {
 		
 	static Connection c2=null;
 	private JTextField textField_1;
+	JPopupMenu popupMenu;
+    JMenuItem menuItemAdd;
 
 	
 	public main_dashboard1() {
@@ -106,6 +117,7 @@ public class main_dashboard1 extends Thread implements ActionListener {
 		JFileChooser filechooser1 = new JFileChooser();
 		filechooser1.setBounds(211,370,407,135);
 		panel.add(filechooser1);
+		
 		
 		btnNewButton = new JButton("Blast");
 		btnNewButton.setBounds(747, 353, 117, 29);
@@ -227,10 +239,30 @@ public class main_dashboard1 extends Thread implements ActionListener {
 		    JLabel jl1 = new JLabel("Building list of databases");
 		    jp2.add(jl1);
 		    pbjf2.pack();
-		
+		    	
+
+			    JPopupMenu popupMenu = new JPopupMenu();
+			    JMenuItem menuItemAdd = new JMenuItem("View output");
+			    table_1.setComponentPopupMenu(popupMenu);
+			    
+			    ActionListener actionListener = new PopupActionListener();
+		    
+		        popupMenu.add(menuItemAdd);
+		        menuItemAdd.addActionListener(actionListener);
+		        menuItemAdd.setEnabled(true);
+		        
+		        
+		        
+		        
 	}
 	
 	public void actionPerformed(ActionEvent e) {
+		
+		if(e.getSource() == popupMenu) {
+			
+			System.out.println("Selected item from popup window.");
+			
+		}
 		
 		if(e.getSource() == btnNewButton_2) {
 			
@@ -401,7 +433,6 @@ public class main_dashboard1 extends Thread implements ActionListener {
 				  //Thread to monitor other threads. Nothing fancy from a concurrency perspective just know when the DB worker threads are done running.
 				    
 				    mt1 = new monitor_db_thread1();
-				    
 				    mt1.start();
 				    
 					  }
@@ -412,3 +443,27 @@ public class main_dashboard1 extends Thread implements ActionListener {
 
 
 		}
+
+class PopupActionListener implements ActionListener {
+	  public void actionPerformed(ActionEvent actionEvent) {
+		  
+		  
+		  String file_ts = new SimpleDateFormat("yyyyMMdd").format(new Date());
+		  
+		  String file_name = ".."+File.separator+"output"+File.separator+"orablast_pdb1_"+file_ts
+					+".out";
+					
+		  File f = new File(file_name);
+			
+		  
+		  try {
+			Desktop.getDesktop().edit(f);
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+		  
+	    System.out.println("Selected: " + actionEvent.getActionCommand());
+	  
+	  }
+	}
