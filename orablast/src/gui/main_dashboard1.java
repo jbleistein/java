@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -51,6 +52,7 @@ import thread.test1;
 import javax.swing.JScrollPane;
 import java.awt.Choice;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Dimension;
 
@@ -81,15 +83,13 @@ public class main_dashboard1 extends Thread implements ActionListener {
 	String DB_USER_NAME="app";
 	String DB_USER_PWD="app123";
 	String ORA_JDBC_CONNECT_STRING;
-	String [] array;
+	static String [] array;
 	monitor_db_thread1 mt1;
 	public static hash_map hm;
 	JPanel panel;
-	public static JFrame pbjf1;
 	public static JFrame pbjf2;
-    
-		
-	static Connection c2=null;
+	public static JFrame pbjf1;
+    Connection c2=null;
 	private JTextField textField_1;
 	JPopupMenu popupMenu;
     JMenuItem menuItemAdd;
@@ -105,7 +105,7 @@ public class main_dashboard1 extends Thread implements ActionListener {
 		frmOracleRrtDashboard.setLocationRelativeTo(null);
 		frmOracleRrtDashboard.setVisible(true);
 		frmOracleRrtDashboard.setResizable(false);
-	
+		
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frmOracleRrtDashboard.getContentPane().add(tabbedPane);
@@ -140,6 +140,22 @@ public class main_dashboard1 extends Thread implements ActionListener {
 		
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab("DOD", null, panel_1, null);
+		frmOracleRrtDashboard.getContentPane().add(tabbedPane);
+		
+
+		JPanel panel_2 = new JPanel();
+		tabbedPane.addTab("DB Open check", null, panel_2, null);
+		frmOracleRrtDashboard.getContentPane().add(tabbedPane);
+		
+
+		JPanel panel_3 = new JPanel();
+		tabbedPane.addTab("DG Gap", null, panel_3, null);
+		frmOracleRrtDashboard.getContentPane().add(tabbedPane);
+		
+
+		JPanel panel_4 = new JPanel();
+		tabbedPane.addTab("Tablespace", null, panel_4, null);
+		frmOracleRrtDashboard.getContentPane().add(tabbedPane);
 		
 
 		table_1 = new JTable(model);
@@ -233,13 +249,17 @@ public class main_dashboard1 extends Thread implements ActionListener {
 		    pb2.setIndeterminate(true);
 		    
 		    jp2.add(pb2);
-		    pbjf2.add(jp2);
-		    pbjf2.setVisible(true);
-		    pbjf2.setAlwaysOnTop(true);
+		    pbjf2.getContentPane().add(jp2);
+		   // pbjf2.setAlwaysOnTop(true);
+		 
+		    
 		    JLabel jl1 = new JLabel("Building list of databases");
 		    jp2.add(jl1);
+		    pbjf2.setAlwaysOnTop(true);
 		    pbjf2.pack();
-		    	
+		    pbjf2.setVisible(true);
+
+		    
 
 			    JPopupMenu popupMenu = new JPopupMenu();
 			    JMenuItem menuItemAdd = new JMenuItem("View output");
@@ -313,7 +333,7 @@ public class main_dashboard1 extends Thread implements ActionListener {
 				}
 				
 				
-				String [] array = new String[SelectedRow.length];
+				array = new String[SelectedRow.length];
 				
 				for (int i = 0; i < array.length;i++ )
 				
@@ -418,16 +438,16 @@ public class main_dashboard1 extends Thread implements ActionListener {
 						    
 						    JPanel jp1 = new JPanel();
 						    
-						    JProgressBar pb1 = new JProgressBar();
+						    JProgressBar pb1 = new JProgressBar();	
 						    pb1.setIndeterminate(true);
 						    
 						    jp1.add(pb1);
-						    pbjf1.add(jp1);
+						    pbjf1.getContentPane().add(jp1);
 						    pbjf1.pack();
 						    pbjf1.setVisible(true);
 						    JLabel jl2 = new JLabel("Blasting SQL out to databases");
 						    jp1.add(jl2);
-						    pbjf1.pack();
+						   
 						 
 				    
 				  //Thread to monitor other threads. Nothing fancy from a concurrency perspective just know when the DB worker threads are done running.
@@ -441,21 +461,22 @@ public class main_dashboard1 extends Thread implements ActionListener {
 	
 			} 
 
-
 		}
 
 class PopupActionListener implements ActionListener {
 	  public void actionPerformed(ActionEvent actionEvent) {
 		  
+		  System.out.println("Selected row: " +main_dashboard1.table_1.getSelectedRow());
 		  
-		  String file_ts = new SimpleDateFormat("yyyyMMdd").format(new Date());
+		   System.out.println("Selected: " + actionEvent.getActionCommand());
 		  
-		  String file_name = ".."+File.separator+"output"+File.separator+"orablast_pdb1_"+file_ts
+		  
+		  
+	String file_ts = new SimpleDateFormat("yyyyMMdd").format(new Date());
+	String file_name = ".."+File.separator+"output"+File.separator+"orablast_"+main_dashboard1.table_1.getValueAt(main_dashboard1.table_1.getSelectedRow(), 1)+"_"+file_ts
 					+".out";
-					
 		  File f = new File(file_name);
 			
-		  
 		  try {
 			Desktop.getDesktop().edit(f);
 		} catch (IOException e) {
@@ -463,7 +484,8 @@ class PopupActionListener implements ActionListener {
 			e.printStackTrace();
 		}
 		  
-	    System.out.println("Selected: " + actionEvent.getActionCommand());
-	  
+		  
+		  
+		  }
 	  }
-	}
+	
