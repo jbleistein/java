@@ -204,11 +204,12 @@ public class blast_thread extends Thread {
 							// sort by the first column 
 							tt.setSort(0); 
 						
-							
-							String filePath="..\"+File.separator+\"output\"+File.separator+\"orablast_\"+myArray[i]+\"_\"+file_ts+\".out";
-					        //PrintStream stream = new PrintStream(new BufferedOutputStream(new FileOutputStream(filePath)), true);  q
 
-					        PrintStream stream = new PrintStream(new FileOutputStream("file.out", true));
+							String file_ts = new SimpleDateFormat("yyyyMMdd").format(new Date());
+							String file_name = ".."+File.separator+"output"+File.separator+"orablast_"+myArray[i]+"_"+file_ts+".out";
+							
+
+					        PrintStream stream = new PrintStream(new FileOutputStream(file_name, true));
 					        
 					        System.setOut(stream);
 							
@@ -217,50 +218,6 @@ public class blast_thread extends Thread {
 		
 							stream.close();
 							
-							
-							
-							
-							/*Path filePathObj = Paths.get(filePath);
-					        boolean fileExists = Files.exists(filePathObj);
-					        
-					       
-					        
-					        if(fileExists) {
-					            try {
-					                
-					                Files.write(filePathObj,.getBytes(), StandardOpenOption.APPEND);
-					                System.out.println("! Data Successfully Appended !");
-					            } catch (IOException ioExceptionObj) {
-					                System.out.println("Problem Occured While Writing To The File= " + ioExceptionObj.getMessage());
-					            }
-					        } else {
-					            
-					        }
-							
-							
-							/*
-							//Write table formatted stream output to a file.
-							
-							String file_ts = new SimpleDateFormat("yyyyMMdd").format(new Date());
-							
-							pw1 = new PrintStream(".."+File.separator+"output"+File.separator+"orablast_"+myArray[i]+"_"+file_ts+".out");
-							
-							
-							//System.setOut(pw1);
-							
-								
-									
-							String file = "..\"+File.separator+\"output\"+File.separator+\"orablast_\"+myArray[i]+\"_\"+file_ts+\".out";
-								
-							PrintStream ostream = new PrintStream(new FileOutputStream(file, true));
-							
-							System.setOut(ostream); 
-							
-							tt.printTable();
-							
-							ostream.close();
-							
-				 			*/
 							
 				 	       }
 			         
