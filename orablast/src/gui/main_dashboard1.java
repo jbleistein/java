@@ -238,28 +238,27 @@ public class main_dashboard1 extends Thread implements ActionListener {
 	       
 	     //Progress bar while building list of databases in table
 		    
+	       //Progress bar while building list of dbs in tqble
+		    
 		    pbjf2 = new JFrame();
 		    pbjf2.setSize(200,100);
 		    pbjf2.setLocationRelativeTo(null);
 		  
 		    
-		    JPanel jp2 = new JPanel();
+		    JPanel jp2= new JPanel();
 		    
-		    JProgressBar pb2 = new JProgressBar();
+		    JProgressBar pb2 = new JProgressBar();	
 		    pb2.setIndeterminate(true);
 		    
 		    jp2.add(pb2);
 		    pbjf2.getContentPane().add(jp2);
-		   // pbjf2.setAlwaysOnTop(true);
 		 
-		    
-		    JLabel jl1 = new JLabel("Building list of databases");
-		    jp2.add(jl1);
 		    pbjf2.setAlwaysOnTop(true);
+		    JLabel jl2 = new JLabel("Building database list...");
+		    jp2.add(jl2);
 		    pbjf2.pack();
 		    pbjf2.setVisible(true);
-
-		    
+		  
 
 			    JPopupMenu popupMenu = new JPopupMenu();
 			    JMenuItem menuItemAdd = new JMenuItem("View output");
@@ -443,10 +442,10 @@ public class main_dashboard1 extends Thread implements ActionListener {
 						    
 						    jp1.add(pb1);
 						    pbjf1.getContentPane().add(jp1);
+						    JLabel jl2 = new JLabel("Blasting SQL out to databases...");
+						    jp1.add(jl2);
 						    pbjf1.pack();
 						    pbjf1.setVisible(true);
-						    JLabel jl2 = new JLabel("Blasting SQL out to databases");
-						    jp1.add(jl2);
 						   
 						 
 				    

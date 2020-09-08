@@ -1,10 +1,17 @@
 package thread;
 
 import java.awt.EventQueue;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.lang.reflect.Array;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -191,22 +198,69 @@ public class blast_thread extends Thread {
 				 	      
 				 			TextTable tt = new TextTable(col_names, resultSet);
 
-				 			
+
 							// this adds the numbering on the left 
 							tt.setAddRowNumbering(true); 
 							// sort by the first column 
 							tt.setSort(0); 
+						
 							
+							String filePath="..\"+File.separator+\"output\"+File.separator+\"orablast_\"+myArray[i]+\"_\"+file_ts+\".out";
+					        //PrintStream stream = new PrintStream(new BufferedOutputStream(new FileOutputStream(filePath)), true);  q
+
+					        PrintStream stream = new PrintStream(new FileOutputStream("file.out", true));
+					        
+					        System.setOut(stream);
+							
+							
+							tt.printTable();
+		
+							stream.close();
+							
+							
+							
+							
+							/*Path filePathObj = Paths.get(filePath);
+					        boolean fileExists = Files.exists(filePathObj);
+					        
+					       
+					        
+					        if(fileExists) {
+					            try {
+					                
+					                Files.write(filePathObj,.getBytes(), StandardOpenOption.APPEND);
+					                System.out.println("! Data Successfully Appended !");
+					            } catch (IOException ioExceptionObj) {
+					                System.out.println("Problem Occured While Writing To The File= " + ioExceptionObj.getMessage());
+					            }
+					        } else {
+					            
+					        }
+							
+							
+							/*
 							//Write table formatted stream output to a file.
 							
 							String file_ts = new SimpleDateFormat("yyyyMMdd").format(new Date());
 							
-							pw1 = new PrintStream(".."+File.separator+"output"+File.separator+"orablast_"+myArray[i]+"_"+file_ts
-									+".out");
-							System.setOut(pw1);
+							pw1 = new PrintStream(".."+File.separator+"output"+File.separator+"orablast_"+myArray[i]+"_"+file_ts+".out");
+							
+							
+							//System.setOut(pw1);
+							
+								
+									
+							String file = "..\"+File.separator+\"output\"+File.separator+\"orablast_\"+myArray[i]+\"_\"+file_ts+\".out";
+								
+							PrintStream ostream = new PrintStream(new FileOutputStream(file, true));
+							
+							System.setOut(ostream); 
 							
 							tt.printTable();
-							pw1.close();
+							
+							ostream.close();
+							
+				 			*/
 							
 				 	       }
 			         
@@ -241,6 +295,4 @@ public class blast_thread extends Thread {
 	    }
 		 	
 	}
-	
-	
 	
