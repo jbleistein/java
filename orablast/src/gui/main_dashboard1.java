@@ -78,6 +78,7 @@ public class main_dashboard1 extends Thread implements ActionListener {
 	public static JTextArea textArea;
 	public static blast_thread bt1;
 	public static blast_thread bt2;
+	JButton btnBrowse;
 	
 
 	String DB_SERVER="192.168.240.134";
@@ -130,10 +131,6 @@ public class main_dashboard1 extends Thread implements ActionListener {
 	    panel = new JPanel();
 		tabbedPane.addTab("Blast", null, panel, null);
 		panel.setLayout(null);
-		
-		JFileChooser filechooser1 = new JFileChooser();
-		filechooser1.setBounds(211,370,407,135);
-		panel.add(filechooser1);
 		
 		
 		btnNewButton = new JButton("Blast");
@@ -286,16 +283,31 @@ public class main_dashboard1 extends Thread implements ActionListener {
 		    JMenuItem menuItemAdd = new JMenuItem("View output");
 		    table_1.setComponentPopupMenu(popupMenu);
 		    
+		    btnBrowse = new JButton("Browse");
+		    btnBrowse.setBounds(513, 353, 117, 29);
+		    panel.add(btnBrowse);
+		    
 		    ActionListener actionListener = new PopupActionListener();
 	    
 	        popupMenu.add(menuItemAdd);
 	        menuItemAdd.addActionListener(actionListener);
 	        menuItemAdd.setEnabled(true);
+	        
+	        btnBrowse.addActionListener(this);
 	       
 	}
 	
 	
 	public void actionPerformed(ActionEvent e) {
+		
+
+		if(e.getSource() == btnBrowse) {
+			
+			JFileChooser fileChooser = new JFileChooser();
+		    fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		    fileChooser.showOpenDialog(null);
+		    
+		}
 		   
 		
 		if(e.getSource() == popupMenu) {
@@ -475,7 +487,6 @@ public class main_dashboard1 extends Thread implements ActionListener {
 	
 	
 			} 
-
 		}
 
 class PopupActionListener implements ActionListener {
@@ -505,4 +516,3 @@ class PopupActionListener implements ActionListener {
 	  
 	  
 	  }
-	

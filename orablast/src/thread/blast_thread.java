@@ -129,7 +129,7 @@ public class blast_thread extends Thread {
 								
 								catch (Exception e) {
 									
-									//e.printStackTrace();
+									e.printStackTrace();
 									
 									any_thread_errors=1;
 									
