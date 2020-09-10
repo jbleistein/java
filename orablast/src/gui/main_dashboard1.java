@@ -110,6 +110,19 @@ public class main_dashboard1 extends Thread implements ActionListener {
 		frmOracleRrtDashboard.setVisible(true);
 		frmOracleRrtDashboard.setResizable(false);
 		
+		frmOracleRrtDashboard.addWindowListener(new java.awt.event.WindowAdapter() {
+		
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+		        
+		    	int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Confirm", JOptionPane.YES_NO_OPTION);
+				if (reply == JOptionPane.YES_OPTION) {
+				    
+					System.exit(0);
+				}
+			
+		    }
+		});
+		
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frmOracleRrtDashboard.getContentPane().add(tabbedPane);
@@ -235,9 +248,7 @@ public class main_dashboard1 extends Thread implements ActionListener {
 		btnNewButton.addActionListener(this);
 		button.addActionListener(this);
 		btnNewButton_1.addActionListener(this);
-		
-	    
-		
+				
 		//Build list of databases in table.
         
 	       bjt1 = new build_jtable();

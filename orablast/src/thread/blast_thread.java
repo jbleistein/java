@@ -3,6 +3,7 @@ package thread;
 import java.awt.EventQueue;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -18,6 +19,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.SQLRecoverableException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -57,6 +59,7 @@ public class blast_thread extends Thread {
 	static Connection c1;
 	static Connection c2;
 	public static PrintStream pw1;
+	PrintStream stream;
 
 
 	public blast_thread(String[] myArray) {
@@ -126,7 +129,7 @@ public class blast_thread extends Thread {
 								
 								catch (Exception e) {
 									
-									e.printStackTrace();
+									//e.printStackTrace();
 									
 									any_thread_errors=1;
 									
@@ -134,16 +137,19 @@ public class blast_thread extends Thread {
 							}
 						});			
 			          
-			        	
-				 	} catch (SQLException e) {
+				 		
+				 	} catch(SQLException e) {
 			        	 
 			        	 int db_ind = main_dashboard1.hm.get_pdb_ind_hm(myArray[i]);
 							
 							table_1.setValueAt("ERROR", db_ind , 2);	
 							
-						e.printStackTrace();
-							
-							System.out.println(e.getErrorCode());
+						String file_ts = new SimpleDateFormat("yyyyMMdd").format(new Date());
+						fname = new File(".."+File.separator+"output"+File.separator+"orablast_"+myArray[i]+"_"+file_ts+".out");
+					    stream = new PrintStream(new FileOutputStream(fname, true));
+				        System.setOut(stream);
+				        System.out.println(e.getMessage());
+					    stream.close();
 
 			        	 any_thread_errors=1;
 			        	 
@@ -215,7 +221,7 @@ public class blast_thread extends Thread {
 							fname = new File(".."+File.separator+"output"+File.separator+"orablast_"+myArray[i]+"_"+file_ts+".out");
 							
 							
-					        PrintStream stream = new PrintStream(new FileOutputStream(fname, true));
+					        stream = new PrintStream(new FileOutputStream(fname, true));
 					        
 					        System.setOut(stream);
 							
@@ -240,15 +246,27 @@ public class blast_thread extends Thread {
 		        	int db_ind = main_dashboard1.hm.get_pdb_ind_hm(myArray[i]);
 					
 					table_1.setValueAt("ERROR", db_ind , 2);	
+					
+					String file_ts = new SimpleDateFormat("yyyyMMdd").format(new Date());
+					fname = new File(".."+File.separator+"output"+File.separator+"orablast_"+myArray[i]+"_"+file_ts+".out");
+					
+						try {
+							stream = new PrintStream(new FileOutputStream(fname, true));
+						} catch (FileNotFoundException e1) {
+		
+							e1.printStackTrace();
+						}
+					
+			        System.setOut(stream);
+			        System.out.println(e.getMessage());
+				    stream.close();
 
 	        	    any_thread_errors=1;
-	        	    
-	        	    e.printStackTrace();
-	        	    
-					}
+
+					    }
 				 	
-			         }
-		        
+			        }
+		       
 			    } 
 	
 
