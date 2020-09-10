@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.AreaAveragingScaleFilter;
+import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -47,7 +49,7 @@ import mem_structs.hash_map;
 import thread.blast_thread;
 import thread.build_jtable;
 import thread.monitor_db_thread1;
-import thread.test1;
+
 
 import javax.swing.JScrollPane;
 import java.awt.Choice;
@@ -76,6 +78,7 @@ public class main_dashboard1 extends Thread implements ActionListener {
 	public static JTextArea textArea;
 	public static blast_thread bt1;
 	public static blast_thread bt2;
+	
 
 	String DB_SERVER="192.168.240.134";
 	String DB_SERVER_PORT="1521";
@@ -93,6 +96,7 @@ public class main_dashboard1 extends Thread implements ActionListener {
 	private JTextField textField_1;
 	JPopupMenu popupMenu;
     JMenuItem menuItemAdd;
+    public static build_jtable bjt1;
 
 	
 	public main_dashboard1() {
@@ -130,6 +134,7 @@ public class main_dashboard1 extends Thread implements ActionListener {
 		textArea = new JTextArea();
 		textArea.setBounds(274, 22, 568, 319);
 		panel.add(textArea);
+
 		
  model = new DefaultTableModel();
         
@@ -231,51 +236,56 @@ public class main_dashboard1 extends Thread implements ActionListener {
 		button.addActionListener(this);
 		btnNewButton_1.addActionListener(this);
 		
+	    
+		
 		//Build list of databases in table.
         
-	       build_jtable bjt1 = new build_jtable();
+	       bjt1 = new build_jtable();
 	       bjt1.start();
 	       
-	     //Progress bar while building list of databases in table
-		    
-	       //Progress bar while building list of dbs in tqble
-		    
-		    pbjf2 = new JFrame();
-		    pbjf2.setSize(200,100);
-		    pbjf2.setLocationRelativeTo(null);
-		  
-		    
-		    JPanel jp2= new JPanel();
-		    
-		    JProgressBar pb2 = new JProgressBar();	
-		    pb2.setIndeterminate(true);
-		    
-		    jp2.add(pb2);
-		    pbjf2.getContentPane().add(jp2);
-		 
-		    pbjf2.setAlwaysOnTop(true);
-		    JLabel jl2 = new JLabel("Building database list...");
-		    jp2.add(jl2);
-		    pbjf2.pack();
-		    pbjf2.setVisible(true);
-		  
 
-			    JPopupMenu popupMenu = new JPopupMenu();
-			    JMenuItem menuItemAdd = new JMenuItem("View output");
-			    table_1.setComponentPopupMenu(popupMenu);
-			    
-			    ActionListener actionListener = new PopupActionListener();
+			//Progress bar while building list of databases in table
+	       
+
+		     EventQueue.invokeLater(new Runnable() {
+	        	public void run() {
+					try {
+					
+				        pbjf2 = new JFrame();
+				        pbjf2.setSize(200,100);
+					    pbjf2.setLocationRelativeTo(null);
+					    JPanel jp2= new JPanel();
+					    JProgressBar pb2 = new JProgressBar();	
+					    pb2.setIndeterminate(true);
+					    jp2.add(pb2);
+					    pbjf2.getContentPane().add(jp2);
+					    pbjf2.setAlwaysOnTop(true);
+					    JLabel jl3 = new JLabel("Building database list...");
+					    jp2.add(jl3);
+					    pbjf2.pack();
+					    pbjf2.setVisible(true);
+						
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});		 	        
+
+	        JPopupMenu popupMenu = new JPopupMenu();
+		    JMenuItem menuItemAdd = new JMenuItem("View output");
+		    table_1.setComponentPopupMenu(popupMenu);
 		    
-		        popupMenu.add(menuItemAdd);
-		        menuItemAdd.addActionListener(actionListener);
-		        menuItemAdd.setEnabled(true);
-		        
-		        
-		        
-		        
+		    ActionListener actionListener = new PopupActionListener();
+	    
+	        popupMenu.add(menuItemAdd);
+	        menuItemAdd.addActionListener(actionListener);
+	        menuItemAdd.setEnabled(true);
+	       
 	}
 	
+	
 	public void actionPerformed(ActionEvent e) {
+		   
 		
 		if(e.getSource() == popupMenu) {
 			
@@ -320,7 +330,6 @@ public class main_dashboard1 extends Thread implements ActionListener {
 			
 			if (e.getSource() == btnNewButton) {
 				//blast
-				
 				
 				
 				int [] SelectedRow = table_1.getSelectedRows();
@@ -423,31 +432,27 @@ public class main_dashboard1 extends Thread implements ActionListener {
 						  
 					      bt1 = new blast_thread(myArray1);
 					      bt2 = new blast_thread(myArray2);
-				      
 
 						    bt1.start();
 						    bt2.start();
-						    
+		
 						    //Progress bar while running blast
+						    
 						    
 						    pbjf1 = new JFrame();
 						    pbjf1.setSize(200,100);
 						    pbjf1.setLocationRelativeTo(null);
-						  
-						    
 						    JPanel jp1 = new JPanel();
-						    
 						    JProgressBar pb1 = new JProgressBar();	
 						    pb1.setIndeterminate(true);
-						    
 						    jp1.add(pb1);
 						    pbjf1.getContentPane().add(jp1);
 						    JLabel jl2 = new JLabel("Blasting SQL out to databases...");
 						    jp1.add(jl2);
 						    pbjf1.pack();
 						    pbjf1.setVisible(true);
-						   
-						 
+						    
+						    
 				    
 				  //Thread to monitor other threads. Nothing fancy from a concurrency perspective just know when the DB worker threads are done running.
 				    
@@ -486,5 +491,7 @@ class PopupActionListener implements ActionListener {
 		  
 		  
 		  }
+	  
+	  
 	  }
 	

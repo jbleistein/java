@@ -46,6 +46,7 @@ public class blast_thread extends Thread {
 	 String[] stmts;
 	 ResultSetMetaData rsmd;
 	 boolean rs2;
+	 public static File fname;
 	 
 	 int r;
 	 int db_ind;
@@ -61,8 +62,8 @@ public class blast_thread extends Thread {
 	public blast_thread(String[] myArray) {
 		
 		this.myArray=myArray;
+			
 	}
-	
 	
 	public void run() {
 		
@@ -204,12 +205,17 @@ public class blast_thread extends Thread {
 							// sort by the first column 
 							tt.setSort(0); 
 						
-
-							String file_ts = new SimpleDateFormat("yyyyMMdd").format(new Date());
-							String file_name = ".."+File.separator+"output"+File.separator+"orablast_"+myArray[i]+"_"+file_ts+".out";
+							
+							synchronized(this) {
 							
 
-					        PrintStream stream = new PrintStream(new FileOutputStream(file_name, true));
+							String file_ts = new SimpleDateFormat("yyyyMMdd").format(new Date());
+							//String file_name = ".."+File.separator+"output"+File.separator+"orablast_"+myArray[i]+"_"+file_ts+".out";
+							
+							fname = new File(".."+File.separator+"output"+File.separator+"orablast_"+myArray[i]+"_"+file_ts+".out");
+							
+							
+					        PrintStream stream = new PrintStream(new FileOutputStream(fname, true));
 					        
 					        System.setOut(stream);
 							
@@ -218,17 +224,19 @@ public class blast_thread extends Thread {
 		
 							stream.close();
 							
-							
-				 	       }
 			         
-			            }
+							    }
 					
+							}
+				 	
+			         }
+			         
 					}
 
 				
 					} catch (Exception e) { 
 					 
-					 
+					
 		        	int db_ind = main_dashboard1.hm.get_pdb_ind_hm(myArray[i]);
 					
 					table_1.setValueAt("ERROR", db_ind , 2);	
@@ -237,12 +245,11 @@ public class blast_thread extends Thread {
 	        	    
 	        	    e.printStackTrace();
 	        	    
-					 }
+					}
+				 	
+			         }
 		        
 			    } 
-
-			
-		 	}
 	
 
 	public int get_error_count() {

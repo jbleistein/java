@@ -46,9 +46,6 @@ public class monitor_db_thread1 extends Thread {
 
 	      if ( main_dashboard1.bt1.get_error_count() > 0 || main_dashboard1.bt2.get_error_count() > 0) {
 	  		
-	    	  
-	    	  main_dashboard1.pbjf1.setVisible(false);
-	    	  
 
 	          EventQueue.invokeLater(new Runnable() {
 					public void run() {
@@ -89,6 +86,10 @@ public class monitor_db_thread1 extends Thread {
 	      
 	    }
 	      
+	      //Turn off progress bar
+	      
+	      main_dashboard1.pbjf2.setVisible(false);
+    	  
 	}
 
 	

@@ -7,16 +7,23 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.table.DefaultTableModel;
 import gui.main_dashboard1;
 
 public class build_jtable extends Thread {
+	
+	public static JFrame pbjf2;
 	
 	DefaultTableModel model = main_dashboard1.model;
 	
 
 	public void run() {
 		
+		 
 
 try {
 
@@ -49,7 +56,7 @@ try {
     
 			}
 
-//Turn off progress bar because table is built.
+
 
 
 try {
@@ -58,6 +65,8 @@ try {
 
 	e.printStackTrace();
 }
+
+//Turn off progress bar because table is built.
 
 	main_dashboard1.pbjf2.setVisible(false);
 
